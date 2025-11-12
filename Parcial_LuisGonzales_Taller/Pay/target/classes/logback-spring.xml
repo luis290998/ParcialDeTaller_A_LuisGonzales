@@ -1,0 +1,37 @@
+<configuration>
+
+    <!-- Crear un appender para guardar errores en archivo -->
+    <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/errors.log</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/errors-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%date %-5level [%thread] %logger{36} - %msg%n</pattern>
+        </encoder>
+
+        <!-- Solo capturar errores -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- Log general a consola -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%yellow(%date) %-5level %cyan(%logger{36}) - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Root logger (consola + archivo de errores) -->
+    <root level="INFO">
+    <appender-ref ref="CONSOLE"/>
+    <appender-ref ref="ERROR_FILE"/>
+</root>
+
+</configuration>
